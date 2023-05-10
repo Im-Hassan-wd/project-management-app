@@ -42,8 +42,7 @@ export default function Signup() {
 
   return (
     <form onSubmit={handleSubmit} className="auth-form">
-      <h2>Sign up</h2>
-
+      <h2>sign up</h2>
       <label>
         <span>email:</span>
         <input
@@ -53,7 +52,6 @@ export default function Signup() {
           value={email}
         />
       </label>
-
       <label>
         <span>password:</span>
         <input
@@ -63,7 +61,6 @@ export default function Signup() {
           value={password}
         />
       </label>
-
       <label>
         <span>display name:</span>
         <input
@@ -73,20 +70,18 @@ export default function Signup() {
           value={displayName}
         />
       </label>
-
       <label>
         <span>Profile thumbnail:</span>
         <input required type="file" onChange={handleFileChange} />
         {thumbnailError && <div className="error">{thumbnailError}</div>}
       </label>
-
       {!isPending && <button className="btn">Sign up</button>}
       {isPending && (
         <button className="btn" disabled>
-          signing up...
+          Signing up...
         </button>
       )}
-      {error && <small className="error">{error}</small>}
+      {error && <div className="error">{error}</div>}
     </form>
   );
 }

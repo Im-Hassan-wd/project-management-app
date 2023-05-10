@@ -73,6 +73,7 @@ textarea {
   min-height: 160px;
 }
 .error {
+  display: block;
   color: red;
   background: pink;
   border: 1px solid red;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSignup } from "../../hooks/useSignup";
 
 // styles
 import "./Signup.css";
@@ -9,15 +10,17 @@ export default function Signup() {
   const [displayName, setDisplayName] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailError, setThumbnailError] = useState(null);
+  const { signup, isPending, error } = useSignup();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ email, displayName, password, thumbnail });
+    signup(email, password, displayName, thumbnail);
   };
 
   const handleFileChange = (e) => {
     setThumbnail(null);
     let selected = e.target.files[0];
+    console.log(selected);
 
     if (!selected) {
       setThumbnailError("Please select a file");
@@ -28,7 +31,7 @@ export default function Signup() {
       return;
     }
     if (selected.size > 100000) {
-      setThumbnailError("Image file size must be less than 1000kb");
+      setThumbnailError("Image file size must be less than 100kb");
       return;
     }
 
@@ -38,46 +41,52 @@ export default function Signup() {
   };
 
   return (
-    <form className="auth-form" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="auth-form">
       <h2>Sign up</h2>
 
       <label>
         <span>email:</span>
         <input
+          required
           type="email"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
-          required
         />
       </label>
 
       <label>
         <span>password:</span>
         <input
+          required
           type="password"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
-          required
         />
       </label>
 
       <label>
         <span>display name:</span>
         <input
+          required
           type="text"
           onChange={(e) => setDisplayName(e.target.value)}
           value={displayName}
-          required
         />
       </label>
 
       <label>
-        <span>profile thumnail:</span>
-        <input type="file" required onChange={handleFileChange} />
-        {thumbnailError && <small className="error">{thumbnailError}</small>}
+        <span>Profile thumbnail:</span>
+        <input required type="file" onChange={handleFileChange} />
+        {thumbnailError && <div className="error">{thumbnailError}</div>}
       </label>
 
-      <button className="btn">Sign up</button>
+      {!isPending && <button className="btn">Sign up</button>}
+      {isPending && (
+        <button className="btn" disabled>
+          signing up...
+        </button>
+      )}
+      {error && <small className="error">{error}</small>}
     </form>
   );
 }
